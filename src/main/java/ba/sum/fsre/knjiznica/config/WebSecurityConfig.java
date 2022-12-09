@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
@@ -32,4 +37,19 @@ public class WebSecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                // URL matching for accessibility
+                .antMatchers("/", "/login", "/register").permitAll()
+                .antMatchers("/admin").hasAnyAuthority("ADMIN")
+                .anyRequest().authenticated();
+        http.authenticationProvider(authenticationProvider());
+        http.headers().frameOptions().sameOrigin();
+
+        return http.build();
+    }
+
+
 }
