@@ -40,11 +40,22 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                // URL matching for accessibility
-                .antMatchers("/", "/login", "/register").permitAll()
-                .antMatchers("/admin").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated();
+        http
+                .authorizeHttpRequests()
+                .requestMatchers("/process_register/**","/","/register")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .usernameParameter("email")
+                .defaultSuccessUrl("/users")
+                .permitAll()
+                .and()
+                .logout().logoutSuccessUrl("/").permitAll();
+
         http.authenticationProvider(authenticationProvider());
         http.headers().frameOptions().sameOrigin();
 

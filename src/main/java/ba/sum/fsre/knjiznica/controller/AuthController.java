@@ -3,6 +3,7 @@ package ba.sum.fsre.knjiznica.controller;
 import ba.sum.fsre.knjiznica.model.User;
 import ba.sum.fsre.knjiznica.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,19 @@ public class AuthController {
 
     @PostMapping("/register_user")
     public String registerUser (User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         userRepo.save(user);
-        return "register_form";
+
+        return "register_success";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model){
+        model.addAttribute("user", new User());
+
+        return "login_form";
     }
 }
