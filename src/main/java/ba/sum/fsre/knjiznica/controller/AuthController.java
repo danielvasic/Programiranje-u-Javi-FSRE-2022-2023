@@ -34,7 +34,6 @@ public class AuthController {
     @GetMapping("/login")
     public String showLoginForm(Model model){
         model.addAttribute("user", new User());
-
         return "login_form";
     }
 }

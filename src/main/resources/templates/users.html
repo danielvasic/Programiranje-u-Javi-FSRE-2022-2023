@@ -10,31 +10,31 @@
   <div>
     <form th:action="@{/logout}" method="post">
       <p>
-        Welcome <b><span th:text="${#authentication.getPrincipal().getUsername()}"></span></b>
+        Welcome <b><span th:text="${userDetails.getFullName()}"></span></b>
       </p>
-      <input type="submit" value="Sign Out" />
+      <input type="submit" value="Odjavite se" />
     </form>
   </div>
   <div>
-    <h1>List of Users</h1>
+    <h1>Lista korisnika</h1>
   </div>
 
   <div>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
       <tr>
-        <th>User ID</th>
+        <th>ID</th>
         <th>E-mail</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Ime</th>
+        <th>Prezime</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="user: ${listUsers}">
         <td th:text="${user.id}">User ID</td>
         <td th:text="${user.email}">E-mail</td>
-        <td th:text="${user.firstName}">First Name</td>
-        <td th:text="${user.lastName}">Last Name</td>
+        <td th:text="${user.firstname}">First Name</td>
+        <td th:text="${user.lastname}">Last Name</td>
       </tr>
       </tbody>
     </table>

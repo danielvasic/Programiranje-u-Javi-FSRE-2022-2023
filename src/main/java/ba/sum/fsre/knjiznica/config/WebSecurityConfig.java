@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
@@ -42,7 +41,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/process_register/**","/","/register")
+                .requestMatchers("/register_user/**","/","/register")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
