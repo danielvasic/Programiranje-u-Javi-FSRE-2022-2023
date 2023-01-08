@@ -2,15 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registracija na sustav</title>
+    <title>Knjižnica - Registracija na sustav</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 </head>
-<body>
-<div class="container text-center">
-    <div>
-        <h1>Registracija na sustav</h1>
-    </div>
-    <form th:action="@{/register_user}" th:object="${user}"
+<body style="background-color: whitesmoke">
+<div class="container vh-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-6">
+            <div class="card text-center">
+                <div class="card-body">
+                <h3>Registracija na sustav</h3>
+                <form th:action="@{/register_user}" th:object="${user}"
           method="post" style="max-width: 600px; margin: 0 auto;">
         <div class="m-3">
             <div class="form-group row">
@@ -34,9 +36,11 @@
             <div class="form-group row">
                 <label class="col-4 col-form-label">Ponovite lozinku: </label>
                 <div class="col-8">
-                    <input th:unless="${#fields.hasErrors('passwordsEqual')}" type="password" th:field="*{passwordRepeat}" class="form-control" />
+                    <input th:unless="${#fields.hasErrors('passwordsEqual') or #fields.hasErrors('passwordRepeat')}" type="password" th:field="*{passwordRepeat}" class="form-control" />
                     <input th:if="${#fields.hasErrors('passwordsEqual')}" type="password" th:field="*{passwordRepeat}" class="form-control is-invalid" />
                     <div th:if="${#fields.hasErrors('passwordsEqual')}" th:errors="*{passwordsEqual}" class="invalid-feedback"></div>
+                    <input th:if="${#fields.hasErrors('passwordRepeat')}" type="password" th:field="*{passwordRepeat}" class="form-control is-invalid" />
+                    <div th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}" class="invalid-feedback"></div>
                 </div>
             </div>
 
@@ -60,10 +64,17 @@
             </div>
 
             <div>
-                <button type="submit" class="btn btn-primary">Registracija</button>
+                <button type="submit" class="btn btn-block btn-primary">Registracija</button>
+            </div>
+            <div>
+                <a href="login" class="mt-2 btn btn-block btn-outline-secondary">Prijavi se</a>
             </div>
         </div>
     </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

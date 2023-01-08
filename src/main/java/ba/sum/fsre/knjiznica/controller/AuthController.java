@@ -30,10 +30,9 @@ public class AuthController {
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPasswordRepeat(encodedPassword);
         user.setPassword(encodedPassword);
-
         userRepo.save(user);
-
         return "register_success";
     }
 
