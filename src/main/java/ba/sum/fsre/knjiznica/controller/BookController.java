@@ -1,9 +1,9 @@
 package ba.sum.fsre.knjiznica.controller;
 
 import ba.sum.fsre.knjiznica.model.Book;
-import ba.sum.fsre.knjiznica.model.User;
 import ba.sum.fsre.knjiznica.model.UserDetails;
 import ba.sum.fsre.knjiznica.repositories.BookRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +28,7 @@ public class BookController {
         model.addAttribute("userDetails", userDetails);
         List<Book> listBooks = bookRepo.findAll();
         model.addAttribute("listBooks", listBooks);
+        model.addAttribute("activeLink", "Knjige");
         return "books";
     }
 
@@ -35,13 +36,23 @@ public class BookController {
     public String showAddBookForm (Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        model.addAttribute("activeLink", "Knjige");
         model.addAttribute("userDetails", userDetails);
         model.addAttribute("book", new Book());
-        return "add-book";
+        return "add_book";
     }
 
-    @PostMapping("books_add")
-    public String addBook (Book book, BindingResult result, Model model) {
+    @PostMapping("books/add")
+    public String addBook (@Valid Book book, BindingResult result, Model model) {
+        boolean errors = result.hasErrors();
+        if (errors) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            model.addAttribute("activeLink", "Knjige");
+            model.addAttribute("userDetails", userDetails);
+            model.addAttribute("book", book);
+            return "add_book";
+        }
         bookRepo.save(book);
         return "redirect:books";
     }

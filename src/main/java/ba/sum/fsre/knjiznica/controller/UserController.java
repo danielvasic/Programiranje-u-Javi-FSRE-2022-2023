@@ -24,6 +24,7 @@ public class UserController {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("userDetails", userDetails);
+        model.addAttribute("activeLink", "Korisnici");
         return "users";
     }
 }

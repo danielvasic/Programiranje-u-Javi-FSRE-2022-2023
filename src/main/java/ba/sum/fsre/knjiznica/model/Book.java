@@ -1,6 +1,7 @@
 package ba.sum.fsre.knjiznica.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="books")
@@ -10,15 +11,19 @@ public class Book {
     Long id;
 
     @Column(length = 200, nullable = false)
+    @NotBlank(message = "Molimo unesite naslov knjige.")
     String title;
 
     @Column(length = 150, nullable = false)
+    @NotBlank(message = "Molimo unesite autora knjige.")
     String author;
 
     @Column(length = 30, nullable = false)
+    @NotBlank(message = "Molimo unesite ISBN knjige.")
     String ISBN;
 
     @Column(length = 5, nullable = false)
+    @NotBlank(message = "Molimo unesite godinu izdanja knjige.")
     String year;
 
     public Long getId() {

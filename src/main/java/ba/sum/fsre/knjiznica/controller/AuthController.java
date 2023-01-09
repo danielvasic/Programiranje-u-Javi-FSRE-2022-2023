@@ -16,6 +16,10 @@ public class AuthController {
     @Autowired
     private UserRepository userRepo;
 
+    @GetMapping("/")
+    public String index (Model model) {
+        return "redirect:users";
+    }
     @GetMapping("/register")
     public String showRegistrationForm (Model model) {
         model.addAttribute("user", new User());
