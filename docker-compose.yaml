@@ -12,6 +12,7 @@ services:
       - mysql
   mysql:
     image: mysql:latest
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
     networks:
       - bookstore-network
     environment:
