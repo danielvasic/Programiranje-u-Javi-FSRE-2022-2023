@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  bookstore:
+    container_name: bookstore
+    build: .
+    image: bookstore:latest
+    ports:
+      - 8080:8080
+    networks:
+      - bookstore-network
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:latest
+    networks:
+      - bookstore-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=lozinka
+      - MYSQL_DATABASE=knjiznica
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+volumes:
+  mysql-data:
+networks:
+  bookstore-network:
+    driver: bridge

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -54,6 +55,38 @@ public class BookController {
             return "add_book";
         }
         bookRepo.save(book);
-        return "redirect:books";
+        return "redirect:/books";
+    }
+
+    @GetMapping("books/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+        Book book = bookRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        model.addAttribute("activeLink", "Knjige");
+        model.addAttribute("userDetails", userDetails);
+        model.addAttribute("book", book);
+        return "edit_book";
+    }
+
+    @PostMapping("books/update/{id}")
+    public String updateUser(@PathVariable("id") long id, @Valid Book book,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            book.setId(id);
+            return "edit_book";
+        }
+
+        bookRepo.save(book);
+        return "redirect:/books";
+    }
+
+    @GetMapping("/book/delete/{id}")
+    public String delete(@PathVariable("id") long id, Model model) {
+        Book book = bookRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        bookRepo.delete(book);
+        return "redirect:/books";
     }
 }

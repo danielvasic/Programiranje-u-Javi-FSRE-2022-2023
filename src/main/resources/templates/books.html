@@ -17,6 +17,7 @@
             <th>Autor</th>
             <th>ISBN</th>
             <th>Godina</th>
+            <th colspan="2">Akcije</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,8 @@
             <td th:text="${book.author}">Autor</td>
             <td th:text="${book.ISBN}">ISBN</td>
             <td th:text="${book.year}">Godina</td>
+            <td><a class="btn btn-info" th:href="@{/books/edit/{id}(id=${book.id})}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td><a class="btn btn-danger" th:href="@{/book/delete/{id}(id=${book.id})}"><i class="fa-solid fa-trash"></i></a></td>
         </tr>
         </tbody>
     </table>
