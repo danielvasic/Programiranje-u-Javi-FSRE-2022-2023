@@ -61,7 +61,7 @@ public class BookController {
     @GetMapping("books/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Book book = bookRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         model.addAttribute("activeLink", "Knjige");
@@ -75,6 +75,11 @@ public class BookController {
                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             book.setId(id);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            model.addAttribute("activeLink", "Knjige");
+            model.addAttribute("userDetails", userDetails);
+            model.addAttribute("book", book);
             return "edit_book";
         }
 
@@ -85,7 +90,7 @@ public class BookController {
     @GetMapping("/book/delete/{id}")
     public String delete(@PathVariable("id") long id, Model model) {
         Book book = bookRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
         bookRepo.delete(book);
         return "redirect:/books";
     }
